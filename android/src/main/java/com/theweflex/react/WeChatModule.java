@@ -66,7 +66,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
-import com.sensetime.sensejupiter.MainActivity;
 
 public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEventHandler {
     private String appId;
@@ -994,7 +993,7 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         this.getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("WeChat_Resp", map);
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, DeviceEventManagerModule.RCTDeviceEventEmitter.class));
     }
 
     private interface ImageCallback {
