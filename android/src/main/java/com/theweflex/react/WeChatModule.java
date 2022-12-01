@@ -949,6 +949,7 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
             map.putString("lang", req.lang);
             map.putString("country", req.message.messageExt);
         }
+        Log.d("wechat-lib", "onReq before");
         this.getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("WeChat_Resp", map);
