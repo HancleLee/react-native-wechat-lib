@@ -66,6 +66,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
+import android.util.Log;
 
 public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEventHandler {
     private String appId;
@@ -951,6 +952,7 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         this.getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("WeChat_Resp", map);
+        Log.d("wechat-lib", "onReq" + map.toString());
     }
 
     @Override
@@ -993,7 +995,7 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         this.getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit("WeChat_Resp", map);
-        startActivity(new Intent(this, DeviceEventManagerModule.RCTDeviceEventEmitter.class));
+        Log.d("wechat-lib", "onResp" + map.toString());
     }
 
     private interface ImageCallback {
