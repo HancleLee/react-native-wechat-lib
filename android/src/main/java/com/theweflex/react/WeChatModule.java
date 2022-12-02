@@ -77,6 +77,8 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
     private final static String INVALID_ARGUMENT = "invalid argument.";
     // 缩略图大小 kb
     private final static int THUMB_SIZE = 32;
+    // 缓存intent 从微信打开冷启动的app时，main activity没触发，需要先缓存intent，触发之后，再给到sdk去处理
+    private static Intent storeIntent = null;
 
     private static byte[] bitmapTopBytes(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -142,6 +144,14 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         modules.remove(this);
     }
 
+    public static void checkAndHandleIntent(Intent intent, WechatModuleCallbackInterface callback) {
+        if (modules.isEmpty() == true) {
+            storeIntent = intent;
+            callback.onNoActivity();
+        }
+        handleIntent(intent);
+    }
+
     public static void handleIntent(Intent intent) {
         for (WeChatModule mod : modules) {
             mod.api.handleIntent(intent, mod);
@@ -153,6 +163,10 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
         this.appId = appid;
         api = WXAPIFactory.createWXAPI(this.getReactApplicationContext().getBaseContext(), appid, true);
         callback.invoke(null, api.registerApp(appid));
+        if (storeIntent != null) {
+            WeChatModule.handleIntent(storeIntent);
+            storeIntent = null;
+        }
     }
 
     @ReactMethod
