@@ -80,6 +80,10 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
     // 缓存intent 从微信打开冷启动的app时，main activity没触发，需要先缓存intent，触发之后，再给到sdk去处理
     private static Intent storeIntent = null;
 
+    public interface WechatModuleCallbackInterface {
+        void onNoActivity();
+    }
+
     private static byte[] bitmapTopBytes(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
